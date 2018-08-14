@@ -9,7 +9,7 @@ open class Observable<T> {
     private val executor = Executors.newSingleThreadExecutor()
     var responseThread:Thread? = null
     var workerThread:Thread? = null
-    
+
     fun subscribe(observer: Observer<T>) {
         observers.add(observer)
         runQueue()

@@ -48,4 +48,8 @@ class ViewTaskVM {
     fun onTaskClicked(task: Task) {
 
     }
+
+    fun onAddClicked() {
+
+    }
 }

@@ -24,7 +24,7 @@ class FindObservable<T>(private val storage: InternalStorage<T>, private val net
                 push(response)
             }
             else -> {
-                network.tryNetwork(identifier) { networkResponse ->
+                network.tryNetwork(identifier, RequestType.GET(null, HashMap())) { networkResponse ->
                     when (networkResponse) {
                         is CoreResponse.Success -> {
                             storage.save(networkResponse.data){

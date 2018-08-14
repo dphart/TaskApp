@@ -21,10 +21,11 @@
         android:layout_height="match_parent" />
 
     <Button
+        android:id="@+id/add_task_button"
         android:background="@drawable/rounded_fab"
         android:layout_marginTop="-60dp"
         android:textColor="@color/white"
-        android:text="Add"
+        android:text="@string/add"
         android:layout_gravity="center_horizontal"
         android:layout_width="100dp"
         android:layout_height="50dp" />

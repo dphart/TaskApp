@@ -5,4 +5,7 @@
     <color name="colorAccent">#4066ff</color>
     <color name="white">#fff</color>
     <color name="completed_text">#aaaaaa</color>
+    <color name="black">#121212</color>
+    <color name="green">#65d23d</color>
+    <color name="purple">#a34bc0</color>
 </resources>

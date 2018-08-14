@@ -12,6 +12,7 @@ object Versions {
 
 object Libs {
     val support_annotations = "com.android.support:support-annotations:${Versions.support_lib}"
+
     val support_appcompat_v7 = "com.android.support:appcompat-v7:${Versions.support_lib}"
     val recyclerview = "com.android.support:recyclerview-v7:${Versions.support_lib}"
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"

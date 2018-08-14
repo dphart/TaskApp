@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import io.danielhartman.tasks.R
 import io.danielhartman.tasks.model.Task
 import io.danielhartman.tasks.model.TaskList
+import io.danielhartman.tasks.ui.create.CreateFragment
 import kotlinx.android.synthetic.main.task_fragment.*
 import me.danielhartman.common.core.Store
 
 class TaskFragment : Fragment() {
     val vm = ViewTaskVM()
+    var taskList:TaskList? = null
     private val adapter = TaskAdapter(){
        vm.onTaskClicked(it)
     }
@@ -23,6 +25,7 @@ class TaskFragment : Fragment() {
         return inflater.inflate(R.layout.task_fragment, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -30,10 +33,17 @@ class TaskFragment : Fragment() {
             title.text = it?.name
         })
         vm.model.taskListDisplayModel.observe(this, Observer { adapter.submitList(it?:ArrayList()) })
+        add_task_button.setOnClickListener { handleAddClicked() }
+    }
+
+    private fun handleAddClicked() {
+        CreateFragment().show(activity?.supportFragmentManager, "CreateFragment")
     }
 
     override fun onResume() {
         super.onResume()
         vm.getList()
     }
+
+
 }
