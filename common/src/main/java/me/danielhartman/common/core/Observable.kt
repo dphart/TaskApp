@@ -10,9 +10,10 @@ open class Observable<T> {
     var responseThread:Thread? = null
     var workerThread:Thread? = null
 
-    fun subscribe(observer: Observer<T>) {
+    fun subscribe(observer: Observer<T>):Observer<T> {
         observers.add(observer)
         runQueue()
+        return observer
     }
 
     fun unsubscribe(observer: Observer<T>) {

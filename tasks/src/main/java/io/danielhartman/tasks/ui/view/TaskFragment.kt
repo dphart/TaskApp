@@ -11,12 +11,11 @@ import io.danielhartman.tasks.R
 import io.danielhartman.tasks.model.Task
 import io.danielhartman.tasks.model.TaskList
 import io.danielhartman.tasks.ui.create.CreateFragment
+import io.danielhartman.tasks.ui.create.CreateFragment.CreateResponse.CreateSuccess
 import kotlinx.android.synthetic.main.task_fragment.*
-import me.danielhartman.common.core.Store
 
 class TaskFragment : Fragment() {
     val vm = ViewTaskVM()
-    var taskList:TaskList? = null
     private val adapter = TaskAdapter(){
        vm.onTaskClicked(it)
     }
@@ -37,7 +36,26 @@ class TaskFragment : Fragment() {
     }
 
     private fun handleAddClicked() {
-        CreateFragment().show(activity?.supportFragmentManager, "CreateFragment")
+        val id = vm.model.taskList.value?.id ?: TaskList.NO_LIST
+        val frag:CreateFragment = CreateFragment.getInstance(id)
+        frag.response = {
+            onCreateResponse(it)
+            frag.dismiss()
+        }
+        frag.show(activity?.supportFragmentManager, "CreateFragment")
+    }
+    private fun onCreateResponse(response:CreateFragment.CreateResponse){
+        when(response){
+            is CreateSuccess -> response.task
+            is CreateFragment.CreateResponse.MyTasks -> {
+                //Todo add manage tasks screen
+            }
+        }
+
+    }
+
+    private fun addTask(task:Task){
+        vm.taskAddedToList(task)
     }
 
     override fun onResume() {

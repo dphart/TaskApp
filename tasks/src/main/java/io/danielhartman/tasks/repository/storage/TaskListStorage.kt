@@ -7,7 +7,7 @@ import io.danielhartman.tasks.model.TaskList
 import me.danielhartman.common.core.CoreResponse
 import me.danielhartman.common.core.Storage
 
-class TaskStorage : Storage<TaskList> {
+class TaskListStorage : Storage<TaskList> {
     override fun write(data: TaskList, cb: (CoreResponse<TaskList>) -> Unit) {
         tasklist = data
         cb(CoreResponse.Success(tasklist))

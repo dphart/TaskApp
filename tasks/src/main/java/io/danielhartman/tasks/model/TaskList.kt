@@ -4,6 +4,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 data class TaskList(
+        val id:Long = NO_LIST,
         var tasks: ArrayList<Task> = ArrayList(),
         var dateInMilli: Long = Calendar.getInstance().timeInMillis,
         var name:String = "") {
@@ -16,6 +17,10 @@ data class TaskList(
         for (task in taskList){
             put(task)
         }
+    }
+
+    companion object {
+        const val NO_LIST = -1L
     }
 
 }

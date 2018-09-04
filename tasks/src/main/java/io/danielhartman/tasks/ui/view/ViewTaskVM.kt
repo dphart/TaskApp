@@ -3,7 +3,7 @@ package io.danielhartman.tasks.ui.view
 import io.danielhartman.tasks.model.CompletionState
 import io.danielhartman.tasks.model.Task
 import io.danielhartman.tasks.model.TaskList
-import io.danielhartman.tasks.repository.storage.TaskStorage
+import io.danielhartman.tasks.repository.storage.TaskListStorage
 import me.danielhartman.common.core.CoreResponse
 import me.danielhartman.common.core.Observer
 import me.danielhartman.common.core.Store
@@ -11,10 +11,10 @@ import me.danielhartman.common.core.Store
 class ViewTaskVM {
 
     val model = ViewTaskModel()
+    val taskListStore = Store<TaskList>().setStorage(TaskListStorage())
 
     fun getList() {
-        val taskStore: Store<TaskList> = Store()
-        taskStore.setStorage(TaskStorage()).read(null, true).subscribe(object : Observer<TaskList> {
+       taskListStore.read().subscribe(object : Observer<TaskList> {
             override fun onData(response: CoreResponse<TaskList>) {
                 when (response) {
                     is CoreResponse.Success -> {
@@ -50,6 +50,17 @@ class ViewTaskVM {
     }
 
     fun onAddClicked() {
+
+    }
+
+    fun taskAddedToList(task: Task) {
+        val taskList = model.taskList.value ?: TaskList()
+        taskList.put(task)
+        taskListStore.update(taskList).subscribe(object : Observer<TaskList> {
+            override fun onData(response: CoreResponse<TaskList>) {
+                getList()
+            }
+        })
 
     }
 }
