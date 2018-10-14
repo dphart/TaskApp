@@ -26,7 +26,6 @@ class ViewTaskVM(val id:Long) {
                 }
             }
         })
-
     }
 
     private fun TaskList.toDisplayModel(): List<TaskListDisplayModel> {
@@ -47,12 +46,13 @@ class ViewTaskVM(val id:Long) {
         return list.toList()
     }
 
-    fun onTaskClicked(task: Task) {
-
-    }
-
-    fun onAddClicked() {
-
+    fun onTaskClicked(task: Task, checked:Boolean) {
+        model.taskList.value?.tasks?.find { task == it }?.status?.state = if (checked) CompletionState.COMPLETED else CompletionState.READY
+        taskListStore.update(model.taskList.value!!).subscribe(object : Observer<TaskList> {
+            override fun onData(response: CoreResponse<TaskList>) {
+                getList()
+            }
+        })
     }
 
     fun taskAddedToList(task: Task) {

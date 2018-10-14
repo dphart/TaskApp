@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.task_fragment.*
 
 class TaskFragment : Fragment() {
     val vm = ViewTaskVM(1)
-    private val adapter = TaskAdapter(){
-       vm.onTaskClicked(it)
+    private val adapter = TaskAdapter(){ task, checked ->
+       vm.onTaskClicked(task, checked)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,6 +30,7 @@ class TaskFragment : Fragment() {
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         vm.model.taskList.observe(this, Observer {
             title.text = it?.name
+            if (title.text.isEmpty()) title.text = "Task List"
         })
         vm.model.taskListDisplayModel.observe(this, Observer { adapter.submitList(it?:ArrayList()) })
         add_task_button.setOnClickListener { handleAddClicked() }

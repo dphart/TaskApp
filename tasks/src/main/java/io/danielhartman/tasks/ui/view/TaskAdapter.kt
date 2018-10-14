@@ -14,7 +14,7 @@ import io.danielhartman.tasks.model.Task
 import kotlinx.android.synthetic.main.task_completed_row.view.*
 import kotlinx.android.synthetic.main.task_open_row.view.*
 
-class TaskAdapter(f:(Task)->Unit) : ListAdapter<TaskListDisplayModel, TaskAdapter.BaseHolder>(TaskDiffUtilCallback()) {
+class TaskAdapter(val cb:(Task, Boolean)->Unit) : ListAdapter<TaskListDisplayModel, TaskAdapter.BaseHolder>(TaskDiffUtilCallback()) {
 
     private val COMPLETED = 1
     private val OPEN = 2
@@ -46,26 +46,31 @@ class TaskAdapter(f:(Task)->Unit) : ListAdapter<TaskListDisplayModel, TaskAdapte
             is TaskListDisplayModel.OpenTask -> currentObj.task
             else -> null
         }
-        holder.display(task)
+        holder.display(task, cb)
     }
 
     abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
-        abstract fun display(task:Task?)
+        abstract fun display(task:Task?, cb:(Task, Boolean)->Unit)
 
     }
     class OpenHolder(view:View):BaseHolder(view){
-        override fun display(task: Task?) {
+        override fun display(task: Task?, cb:(Task, Boolean)->Unit) {
             itemView.task_text_open.text = task?.name
+            itemView.task_checkbox_open.setOnCheckedChangeListener { _, checked -> cb(task!!, checked)  }
+            itemView.task_checkbox_open.isChecked = false
+
         }
     }
     class CompletedHolder(view:View):BaseHolder(view){
-        override fun display(task: Task?) {
+        override fun display(task: Task?, cb:(Task, Boolean)->Unit) {
             itemView.task_text_completed.text = task?.name
             itemView.task_text_completed.paintFlags = itemView.task_text_completed.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            itemView.task_checkbox_completed.setOnCheckedChangeListener { _, checked -> cb(task!!, checked)}
+            itemView.task_checkbox_completed.isChecked = true
         }
     }
     class DividerHolder(view:View):BaseHolder(view){
-        override fun display(task: Task?) {
+        override fun display(task: Task?,cb:(Task, Boolean)->Unit) {
         }
     }
 
