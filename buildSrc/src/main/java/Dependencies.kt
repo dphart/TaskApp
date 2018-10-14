@@ -1,4 +1,5 @@
 import Versions.lifecycle_version
+import Versions.paper_version
 import Versions.room_version
 
 object Versions {
@@ -6,8 +7,9 @@ object Versions {
     const val retrofit = "2.3.0"
     const val rxjava = "2.1.9"
     const val room_version = "1.1.1"
-    const val lifecycle_version = "1.1.1"
-
+    const val lifecycle_version = "1.1.0"
+    const val build_tools_version = "28.0.3"
+    const val paper_version = "2.6"
 }
 
 object Libs {
@@ -24,6 +26,8 @@ object Libs {
     val room_annotation_processor = "android.arch.persistence.room:compiler:$room_version"
 
     val livedata = "android.arch.lifecycle:livedata:${lifecycle_version}"
+
+    val paper = "io.paperdb:paperdb:${paper_version}"
 
 
 }

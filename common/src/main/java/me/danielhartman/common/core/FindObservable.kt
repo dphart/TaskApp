@@ -1,7 +1,7 @@
 package me.danielhartman.common.core
 
 class FindObservable<T>(private val storage: InternalStorage<T>, private val network: InternalNetwork<T>) : Observable<T>() {
-    fun find(identifier: Any? = null, tryCache: Boolean): Observable<T> {
+    fun find(identifier: ((T)->Boolean), tryCache: Boolean): Observable<T> {
         val defaultExecutor = ThreadStore.pool
         val runner = Runnable {
             workerThread?.run {
@@ -11,7 +11,7 @@ class FindObservable<T>(private val storage: InternalStorage<T>, private val net
             } ?: defaultExecutor.run {
                 storage.lookFor(tryCache, identifier) {
                     handleStorageResult(identifier, it)
-                }
+            }
             }
         }
         addToQueue(runner)

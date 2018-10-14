@@ -2,7 +2,7 @@ package me.danielhartman.common.core
 
 class InternalStorage<R>(val storage:Storage<R>?) {
 
-    fun lookFor(tryCache: Boolean, identifier: Any?, cb: (CoreResponse<R>) -> Unit) {
+    fun lookFor(tryCache: Boolean, identifier: ((R)->Boolean), cb: (CoreResponse<R>) -> Unit) {
         var cResponse: CoreResponse<R> = CoreResponse.Error("No Data found")
         if (tryCache && storage?.tryCache() == true) {
             storage.read(identifier) { cResponse = it }

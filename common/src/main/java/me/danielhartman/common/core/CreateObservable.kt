@@ -1,10 +1,10 @@
 package me.danielhartman.common.core
 
 class CreateObservable<T>(val storage: InternalStorage<T>):Observable<T>(){
-    fun create(item:T, cb:((CoreResponse<T>) -> T)?) : Observable<T>{
+    fun create(item:T) : Observable<T>{
         val runnable = Runnable {
             storage.save(item) {
-                cb?.invoke(it)
+                push(it)
             }
         }
         addToQueue(runnable)

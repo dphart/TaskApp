@@ -4,34 +4,51 @@ import io.danielhartman.tasks.model.CompletionState
 import io.danielhartman.tasks.model.Status
 import io.danielhartman.tasks.model.Task
 import io.danielhartman.tasks.model.TaskList
+import io.paperdb.Book
+import io.paperdb.Paper
 import me.danielhartman.common.core.CoreResponse
 import me.danielhartman.common.core.Storage
+import java.lang.Exception
 
 class TaskListStorage : Storage<TaskList> {
+
+    private val taskListKey = "tasklistkey"
     override fun write(data: TaskList, cb: (CoreResponse<TaskList>) -> Unit) {
-        tasklist = data
-        cb(CoreResponse.Success(tasklist))
+        val taskKey = data.getKey(Paper.book(taskListKey))
+        val returnTaskList = data.copy(id = taskKey)
+        Paper.book(taskListKey).write( taskKey.toString(), returnTaskList )
+        cb(CoreResponse.Success(returnTaskList))
     }
 
-    override fun read(identifier: Any?, cb: (CoreResponse<TaskList>) -> Unit) {
-        cb(CoreResponse.Success(tasklist))
+    fun Book.findMax():Long  {
+        return this.allKeys.asSequence().map { it.toLong() }.max() ?: 0
+    }
+    private fun Book.autoincrementKey():Long {
+        return this.findMax() + 1
+    }
+    private fun TaskList.getKey(values: Book):Long{
+        return if (id == TaskList.NO_LIST) values.autoincrementKey() else id
+    }
+
+
+
+    override fun read(identifier: ((TaskList)->Boolean), cb: (CoreResponse<TaskList>) -> Unit) {
+
+        val savedItemsThatMeetIdentifier = Paper.book(taskListKey).allKeys
+                .asSequence()
+                .map { Paper.book(taskListKey).read<TaskList>(it) }
+                .filter { identifier.invoke(it) }
+                .toList()
+
+
+        if (savedItemsThatMeetIdentifier.isNotEmpty()) {
+            cb(CoreResponse.Success(savedItemsThatMeetIdentifier.first()))
+        } else {
+            cb(CoreResponse.Error("Could not find any matching entries for ${identifier}"))
+        }
     }
 
     override fun tryCache(): Boolean {
         return true
-    }
-
-    companion object {
-        var tasklist = TaskList(name = "TaskList demo")
-        val taskOne = Task(1, "TaskOne")
-        val taskTwo = Task(2, "TaskTwo")
-        val taskThree = Task(3, "Taskthree", status = Status(CompletionState.COMPLETED))
-
-        init {
-            tasklist.put(taskOne)
-            tasklist.put(taskTwo)
-            tasklist.put(taskThree)
-        }
-
     }
 }

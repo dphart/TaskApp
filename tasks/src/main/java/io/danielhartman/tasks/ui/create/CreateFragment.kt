@@ -13,7 +13,6 @@ import io.danielhartman.tasks.model.TaskList
 import kotlinx.android.synthetic.main.create_fragment.*
 import kotlinx.android.synthetic.main.task_fragment.*
 
-
 class CreateFragment : DialogFragment() {
 
     private var taskId: Long = -1

@@ -8,13 +8,15 @@ import me.danielhartman.common.core.CoreResponse
 import me.danielhartman.common.core.Observer
 import me.danielhartman.common.core.Store
 
-class ViewTaskVM {
+class ViewTaskVM(val id:Long) {
 
-    val model = ViewTaskModel()
+    val model = ViewTaskModel(id)
     val taskListStore = Store<TaskList>().setStorage(TaskListStorage())
 
     fun getList() {
-       taskListStore.read().subscribe(object : Observer<TaskList> {
+       taskListStore.read{
+           it.id == id
+       }.subscribe(object : Observer<TaskList> {
             override fun onData(response: CoreResponse<TaskList>) {
                 when (response) {
                     is CoreResponse.Success -> {
@@ -61,6 +63,5 @@ class ViewTaskVM {
                 getList()
             }
         })
-
     }
 }

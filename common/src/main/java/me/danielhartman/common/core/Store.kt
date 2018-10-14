@@ -5,18 +5,17 @@ class Store<R> {
     private var network: Network<R>? = null
     private var internalStorage = InternalStorage(storage)
     private var internalNetwork = InternalNetwork(network)
-    val defaultExecutor = ThreadStore.pool
 
-    fun read(identifier: Any? = null, tryCache: Boolean = true): Observable<R> {
+    fun read(tryCache: Boolean = true,identifier: ((R)->Boolean)): Observable<R> {
         return FindObservable(internalStorage, internalNetwork).find(identifier, tryCache)
     }
 
-    fun create(newItem: R, cb:((CoreResponse<R>) -> R)? = null) : Observable<R>  {
-        return CreateObservable(internalStorage).create(newItem, cb)
+    fun create(newItem: R): Observable<R> {
+        return CreateObservable(internalStorage).create(newItem)
     }
 
-    fun update(item: R, cb:((CoreResponse<R>) -> R)? = null) : Observable<R> {
-        return UpdateObservable(internalStorage).update(item, cb)
+    fun update(item: R): Observable<R> {
+        return UpdateObservable(internalStorage).update(item)
     }
 
     fun delete(item: R) {
@@ -28,6 +27,7 @@ class Store<R> {
         this.internalStorage = InternalStorage(storage)
         return this
     }
+
     fun setNetwork(network: Network<R>): Store<R> {
         this.network = network
         this.internalNetwork = InternalNetwork(network)

@@ -6,7 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
@@ -31,13 +30,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation Libs.room_imp
-    kapt Libs.room_annotation_processor
-    implementation project(path: ':common', configuration:'default')
+    api project(path: ':common', configuration:'default')
 
     implementation Libs.recyclerview
     implementation Libs.livedata
     implementation Libs.design_support
+    api Libs.paper
 
 
 }
