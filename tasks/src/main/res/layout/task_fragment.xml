@@ -6,13 +6,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:textStyle="bold"
+
         tools:text="Title here"
-        android:padding="10dp"
-        android:textSize="30sp"
+        style="@style/TitleText"
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

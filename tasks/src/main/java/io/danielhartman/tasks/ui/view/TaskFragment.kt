@@ -24,7 +24,6 @@ class TaskFragment : Fragment() {
         return inflater.inflate(R.layout.task_fragment, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

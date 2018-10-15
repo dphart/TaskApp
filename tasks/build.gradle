@@ -35,6 +35,7 @@ dependencies {
     implementation Libs.recyclerview
     implementation Libs.livedata
     implementation Libs.design_support
+    implementation Libs.cardview
     api Libs.paper
 
 
