@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    >
 
     <TextView
         style="@style/TitleText"
@@ -11,7 +11,15 @@
         android:id="@+id/title_text"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_below="@id/title_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="56dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_height="56dp" />
 
-</LinearLayout>
+</RelativeLayout>

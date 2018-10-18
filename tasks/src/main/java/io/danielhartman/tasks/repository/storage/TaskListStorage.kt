@@ -10,9 +10,8 @@ import me.danielhartman.common.core.CoreResponse
 import me.danielhartman.common.core.Storage
 import java.lang.Exception
 
-class TaskListStorage : Storage<TaskList> {
+open class TaskListStorage : Storage<TaskList> {
 
-    private val taskListKey = "tasklistkey"
     override fun write(data: TaskList, cb: (CoreResponse<TaskList>) -> Unit) {
         val taskKey = data.getKey(Paper.book(taskListKey))
         val returnTaskList = data.copy(id = taskKey)
@@ -23,10 +22,10 @@ class TaskListStorage : Storage<TaskList> {
     fun Book.findMax():Long  {
         return this.allKeys.asSequence().map { it.toLong() }.max() ?: 0
     }
-    private fun Book.autoincrementKey():Long {
+    fun Book.autoincrementKey():Long {
         return this.findMax() + 1
     }
-    private fun TaskList.getKey(values: Book):Long{
+    fun TaskList.getKey(values: Book):Long{
         return if (id == TaskList.NO_LIST) values.autoincrementKey() else id
     }
 
@@ -40,7 +39,6 @@ class TaskListStorage : Storage<TaskList> {
                 .filter { identifier.invoke(it) }
                 .toList()
 
-
         if (savedItemsThatMeetIdentifier.isNotEmpty()) {
             cb(CoreResponse.Success(savedItemsThatMeetIdentifier.first()))
         } else {
@@ -50,5 +48,9 @@ class TaskListStorage : Storage<TaskList> {
 
     override fun tryCache(): Boolean {
         return true
+    }
+
+    companion object {
+        val taskListKey = "tasklistkey"
     }
 }
